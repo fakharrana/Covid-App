@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -7,15 +7,50 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FavCountryList = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [fav, setFav] = useState(true);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      loadData();
+    });
+  }, [navigation]);
+
+  const loadData = async () => {
+    var value = await AsyncStorage.getItem("@dataList");
+
+    if (value === null) {
+      setLoading(false);
+    } else {
+      console.log("Loading Data");
+      var loadedData = JSON.parse(value);
+      setData(loadedData);
+      console.log("Loading Data Done ");
+      setLoading(false);
+    }
+  };
+
+  const deleteData = async (dataItem) => {
+    var value = await AsyncStorage.getItem("@dataList");
+    if (value !== null) {
+      var loadedData = JSON.parse(value);
+      console.log("Saving Data");
+      await AsyncStorage.setItem(
+        "@dataList",
+        JSON.stringify(loadedData.filter((item) => item != dataItem))
+      );
+      console.log("Saving Data Done!");
+      setData(loadedData.filter((item) => item != dataItem));
+    } else {
+      console.log("Sorry, there is no Data");
+    }
+  };
 
   const flatList = (
     <FlatList
@@ -29,14 +64,14 @@ const FavCountryList = ({ navigation }) => {
         >
           <View
             style={{
-              justifyContent: "center",
+              flexDirection: "row",
               alignItems: "center",
               width: 320,
               paddingLeft: 10,
               paddingRight: 10,
               marginBottom: -17,
               marginLeft: 5,
-              backgroundColor: "black",
+              backgroundColor: "grey",
               borderWidth: 3,
               borderColor: "transparent",
               height: 60,
@@ -47,10 +82,35 @@ const FavCountryList = ({ navigation }) => {
               onPress={() =>
                 navigation.navigate("CountryStats", { country: item })
               }
+              style={{ width: 250 }}
             >
-              <Text style={{ width: 280, color: "white", fontweight: "bold" }}>
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  paddingLeft: 3,
+                  fontSize: 21,
+                }}
+              >
                 {item}
               </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ width: 100 }}>
+              {fav ? (
+                <Ionicons
+                  name="star"
+                  color="blue"
+                  size={30}
+                  onPress={() => deleteData(item)}
+                />
+              ) : (
+                <Ionicons
+                  name="star-outline"
+                  color="blue"
+                  size={30}
+                  onPress={() => {}}
+                />
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -76,19 +136,6 @@ const FavCountryList = ({ navigation }) => {
     </View>
   );
 
-  const loadData = async () => {
-    var value = await AsyncStorage.getItem("@dataList");
-
-    if (value === null) {
-      setLoading(false);
-    } else {
-      console.log("Loading Data");
-      var loadedData = JSON.parse(value);
-      setData(loadedData);
-      console.log("Loading Data Done ");
-      setLoading(false);
-    }
-  };
   return (
     <View style={{ paddingTop: 30 }}>
       {isLoading ? (

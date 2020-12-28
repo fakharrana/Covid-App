@@ -17,11 +17,64 @@ const CountryStats = ({ navigation, route }) => {
   const [countryPopulation, setCountryPopulation] = useState(0);
   const [fav, setFav] = useState(false);
 
+  navigation.setOptions({
+    title: country,
+    headerRight: () => (
+      <TouchableOpacity>
+        {fav ? (
+          <Ionicons name="star" color="blue" size={30} onPress={deleteData} />
+        ) : (
+          <Ionicons
+            name="star-outline"
+            color="blue"
+            size={30}
+            onPress={saveData}
+          />
+        )}
+      </TouchableOpacity>
+    ),
+  });
+
   useLayoutEffect(() => {
     getCountryPopulation();
     getCountryData();
     check();
   }, []);
+
+  const getCountryData = () => {
+    fetch("https://covid-19-data.p.rapidapi.com/country?name=" + country, {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": "1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb",
+        "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => setData(responseJson))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  };
+
+  const getCountryPopulation = () => {
+    fetch(
+      "https://world-population.p.rapidapi.com/population?country_name=" +
+        country,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb",
+          "x-rapidapi-host": "world-population.p.rapidapi.com",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((responseJson) =>
+        setCountryPopulation(responseJson.body.population)
+      )
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  };
 
   const check = async () => {
     var value = await AsyncStorage.getItem("@dataList");
@@ -67,62 +120,10 @@ const CountryStats = ({ navigation, route }) => {
     }
   };
 
-  navigation.setOptions({
-    title: country,
-    headerRight: () => (
-      <TouchableOpacity>
-        {fav ? (
-          <Ionicons name="star" color="blue" size={30} onPress={deleteData} />
-        ) : (
-          <Ionicons
-            name="star-outline"
-            color="blue"
-            size={30}
-            onPress={saveData}
-          />
-        )}
-      </TouchableOpacity>
-    ),
-  });
-
-  const getCountryData = () => {
-    fetch("https://covid-19-data.p.rapidapi.com/country?name=" + country, {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb",
-        "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => setData(responseJson))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  };
-  const getCountryPopulation = () => {
-    fetch(
-      "https://world-population.p.rapidapi.com/population?country_name=" +
-        country,
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-key":
-            "1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb",
-          "x-rapidapi-host": "world-population.p.rapidapi.com",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((responseJson) =>
-        setCountryPopulation(responseJson.body.population)
-      )
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  };
-  console.log("Population -> " + countryPopulation);
-
   const percentage = (current) => {
     return ((parseInt(current) * 100) / countryPopulation).toFixed(4);
   };
+
   return (
     <View style={{ paddingTop: 30 }}>
       {isLoading ? (
