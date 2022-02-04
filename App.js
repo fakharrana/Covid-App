@@ -1,14 +1,14 @@
-import * as React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Ionicons, Fontisto, FontAwesome } from "@expo/vector-icons";
-
-import WorldStatistics from "./Screens/WorldStatistics.js";
-import CountryList from "./Screens/CountryList.js";
-import CountryStats from "./Screens/CountryStats.js";
-import FavCountryList from "./Screens/FavCountryList.js";
+import * as React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Ionicons, Fontisto, FontAwesome } from '@expo/vector-icons';
+ 
+import WorldStatistics from './Screens/WorldStatistics.js';
+import CountryList from './Screens/CountryList.js';
+import CountryStats from './Screens/CountryStats.js';
+import FavCountryList from './Screens/FavCountryList.js';
 
 const Stack = createStackNavigator();
 
@@ -19,10 +19,10 @@ const WorldStatsNavigator = () => {
         name="World Statistics"
         component={WorldStatistics}
         options={({ navigation }) => ({
-          headerTitleAlign: "center",
-          headerTintColor: "white",
+          headerTitleAlign: 'center',
+          headerTintColor: 'white',
           headerStyle: {
-            backgroundColor: "#D02760",
+            backgroundColor: '#D02760',
           },
           headerLeft: () => (
             <View style={{ paddingLeft: 10 }}>
@@ -43,20 +43,19 @@ const WorldStatsNavigator = () => {
 const CountryListNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName={"CountryList"}
+      initialRouteName={'CountryList'}
       screenOptions={{
-        headerTitleAlign: "center",
-        headerTintColor: "white",
+        headerTitleAlign: 'center',
+        headerTintColor: 'white',
         headerStyle: {
-          backgroundColor: "#D02760",
+          backgroundColor: '#D02760',
         },
-      }}
-    >
+      }}>
       <Stack.Screen
         name="CountryList"
         component={CountryList}
         options={({ navigation }) => ({
-          title: "Countries List",
+          title: 'Countries List',
           headerLeft: () => (
             <View style={{ paddingLeft: 10 }}>
               <Ionicons
@@ -74,23 +73,23 @@ const CountryListNavigator = () => {
   );
 };
 
+
 const FavCountryListNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName={"FavCountryList"}
+      initialRouteName={'FavCountryList'}
       screenOptions={{
-        headerTitleAlign: "center",
-        headerTintColor: "white",
+        headerTitleAlign: 'center',
+        headerTintColor: 'white',
         headerStyle: {
-          backgroundColor: "#D02760",
+          backgroundColor: '#D02760',
         },
-      }}
-    >
+      }}>
       <Stack.Screen
         name="FavCountryList"
         component={FavCountryList}
         options={({ navigation }) => ({
-          title: " Fav Countries",
+          title: ' Fav Countries',
           headerLeft: () => (
             <View style={{ paddingLeft: 10 }}>
               <Ionicons
@@ -117,9 +116,8 @@ const DrawerNavigator = () => {
         width: 300,
       }}
       drawerContentOptions={{
-        activeTintColor: "#D02760",
-      }}
-    >
+        activeTintColor: '#D02760',
+      }}>
       <Drawer.Screen
         name="World Statistics"
         component={WorldStatsNavigator}

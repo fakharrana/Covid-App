@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -6,9 +6,9 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CountryStats = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
@@ -42,11 +42,11 @@ const CountryStats = ({ navigation, route }) => {
   }, []);
 
   const getCountryData = () => {
-    fetch("https://covid-19-data.p.rapidapi.com/country?name=" + country, {
-      method: "GET",
+    fetch('https://covid-19-data.p.rapidapi.com/country?name=' + country, {
+      method: 'GET',
       headers: {
-        "x-rapidapi-key": "1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb",
-        "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+        'x-rapidapi-key': '1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb',
+        'x-rapidapi-host': 'covid-19-data.p.rapidapi.com',
       },
     })
       .then((response) => response.json())
@@ -57,14 +57,14 @@ const CountryStats = ({ navigation, route }) => {
 
   const getCountryPopulation = () => {
     fetch(
-      "https://world-population.p.rapidapi.com/population?country_name=" +
+      'https://world-population.p.rapidapi.com/population?country_name=' +
         country,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "x-rapidapi-key":
-            "1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb",
-          "x-rapidapi-host": "world-population.p.rapidapi.com",
+          'x-rapidapi-key':
+            '1c425aab07msh0c25c59cce0a85bp1d200ejsncd90f8fc43bb',
+          'x-rapidapi-host': 'world-population.p.rapidapi.com',
         },
       }
     )
@@ -77,7 +77,7 @@ const CountryStats = ({ navigation, route }) => {
   };
 
   const check = async () => {
-    var value = await AsyncStorage.getItem("@dataList");
+    var value = await AsyncStorage.getItem('@dataList');
     if (value !== null) {
       var loadedData = JSON.parse(value);
       if (loadedData.includes(country, 0)) {
@@ -88,35 +88,35 @@ const CountryStats = ({ navigation, route }) => {
 
   const saveData = async () => {
     setFav(true);
-    var value = await AsyncStorage.getItem("@dataList");
+    var value = await AsyncStorage.getItem('@dataList');
     if (value === null) {
-      console.log("Saving First Value ");
-      await AsyncStorage.setItem("@dataList", JSON.stringify([country]));
-      console.log("Saving First Value Done!");
+      console.log('Saving First Value ');
+      await AsyncStorage.setItem('@dataList', JSON.stringify([country]));
+      console.log('Saving First Value Done!');
     } else {
-      console.log("Loading Previous Value");
+      console.log('Loading Previous Value');
       var loadedData = JSON.parse(value);
       loadedData.push(country);
-      console.log("Loading Previous Value Done ");
-      console.log("Saving New Value");
-      await AsyncStorage.setItem("@dataList", JSON.stringify(loadedData));
-      console.log("Saving New Value Done!");
+      console.log('Loading Previous Value Done ');
+      console.log('Saving New Value');
+      await AsyncStorage.setItem('@dataList', JSON.stringify(loadedData));
+      console.log('Saving New Value Done!');
     }
   };
 
   const deleteData = async () => {
-    var value = await AsyncStorage.getItem("@dataList");
+    var value = await AsyncStorage.getItem('@dataList');
     if (value !== null) {
       var loadedData = JSON.parse(value);
-      console.log("Saving Data");
+      console.log('Saving Data');
       await AsyncStorage.setItem(
-        "@dataList",
+        '@dataList',
         JSON.stringify(loadedData.filter((item) => item != country))
       );
-      console.log("Saving Data Done!");
+      console.log('Saving Data Done!');
       setFav(false);
     } else {
-      console.log("Sorry, there is no Data");
+      console.log('Sorry, there is no Data');
     }
   };
 
@@ -134,57 +134,57 @@ const CountryStats = ({ navigation, route }) => {
           renderItem={({ item, index }) => (
             <View style={styles.container}>
               <View style={styles.rowContainer1}>
-                <Text style={{ width: 120, color: "white" }}>
+                <Text style={{ width: 120, color: 'white' }}>
                   Confirmed Cases:
                 </Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" "}
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' '}
                   {item.confirmed}
                 </Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" " + percentage(item.confirmed) + "%"}
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' ' + percentage(item.confirmed) + '%'}
                 </Text>
               </View>
 
               <View style={styles.rowContainer2}>
-                <Text style={{ width: 120, color: "white" }}>Recovered:</Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" "}
+                <Text style={{ width: 120, color: 'white' }}>Recovered:</Text>
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' '}
                   {item.recovered}
                 </Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" " + percentage(item.recovered) + "%"}
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' ' + percentage(item.recovered) + '%'}
                 </Text>
               </View>
 
               <View style={styles.rowContainer3}>
-                <Text style={{ width: 120, color: "white" }}>
+                <Text style={{ width: 120, color: 'white' }}>
                   Critical Cases:
                 </Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" "}
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' '}
                   {item.critical}
                 </Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" " + percentage(item.critical) + "%"}
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' ' + percentage(item.critical) + '%'}
                 </Text>
               </View>
 
               <View style={styles.rowContainer4}>
-                <Text style={{ width: 120, color: "white" }}>Deaths:</Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" "}
+                <Text style={{ width: 120, color: 'white' }}>Deaths:</Text>
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' '}
                   {item.deaths}
                 </Text>
-                <Text style={{ width: 70, color: "white" }}>
-                  {" " + percentage(item.deaths) + "%"}
+                <Text style={{ width: 70, color: 'white' }}>
+                  {' ' + percentage(item.deaths) + '%'}
                 </Text>
               </View>
 
               <View style={styles.rowContainer5}>
-                <Text style={{ width: 160, color: "white" }}>Last Update:</Text>
-                <Text style={{ width: 100, color: "white" }}>
-                  {" "}
+                <Text style={{ width: 160, color: 'white' }}>Last Update:</Text>
+                <Text style={{ width: 100, color: 'white' }}>
+                  {' '}
                   {item.lastUpdate.slice(0, 10)}
                 </Text>
               </View>
@@ -199,73 +199,73 @@ const CountryStats = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#ecf0f1",
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
     padding: 8,
     paddingTop: 50,
   },
   rowContainer1: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 10,
     marginBottom: 4,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "green",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'green',
     borderWidth: 3,
-    borderColor: "green",
+    borderColor: 'green',
     height: 50,
     borderRadius: 20,
   },
   rowContainer2: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 10,
     marginBottom: 4,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#D02760",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#D02760',
     borderWidth: 3,
-    borderColor: "#D02760",
+    borderColor: '#D02760',
     height: 50,
     borderRadius: 20,
   },
   rowContainer3: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 10,
     marginBottom: 4,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "blue",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'blue',
     borderWidth: 3,
-    borderColor: "blue",
+    borderColor: 'blue',
     height: 50,
     borderRadius: 20,
   },
   rowContainer4: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 10,
     marginBottom: 4,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "lightsalmon",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'lightsalmon',
     borderWidth: 3,
-    borderColor: "lightsalmon",
+    borderColor: 'lightsalmon',
     height: 50,
     borderRadius: 20,
   },
   rowContainer5: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 10,
     marginBottom: 4,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "lightseagreen",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'lightseagreen',
     borderWidth: 3,
-    borderColor: "lightseagreen",
+    borderColor: 'lightseagreen',
     height: 50,
     borderRadius: 20,
   },
